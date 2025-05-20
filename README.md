@@ -36,3 +36,22 @@ The file contents are described in pages 90-116 of the AT Attachment 8 - ATA/ATA
 > 16-bit parameters are big-endian, while 32-bit parameters are little-endian.
 >
 > Source: page 90, section `7.16.2 Description` of the ATA8-ACS.
+
+## Output examples
+
+```txt
+// identify1.bin
+Model Number: FUJITSU MJA2320BH G2
+Ultra DMA modes 5 and below are supported.
+SMART self-test not supported.
+
+// identify2.bin
+Model Number: WDC WD2500AAJS-60Z0A0
+Ultra DMA modes 5 and below are supported.
+SMART self-test not supported.
+
+// identify3.bin
+Model Number: WDC WD5002AALX-00J37A0
+Ultra DMA modes 6 and below are supported.
+SMART self-test not supported.
+```
