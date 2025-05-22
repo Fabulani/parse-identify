@@ -90,7 +90,7 @@ The `ParseIdentify-<VERSION>-win64.msi` installer can now be found in the `build
 Pre-requisites:
 
 - CMake >= `3.30` (tested on `4.0.2`).
-- g++
+- g++ (tested on `11.4.0`).
 
 Create the `build` directory:
 
