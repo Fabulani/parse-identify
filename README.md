@@ -1,6 +1,6 @@
-# brancco
+# 🔍 ParseIdentify
 
-Parser and pretty printer for binary files containing the SATA disk's response for the `ATA IDENTIFY` command.
+`ParserIdentify` is a parser for binary files containing the SATA disk's response for the `ATA IDENTIFY` command.
 
 Specifically, it'll print the following to the command line:
 
@@ -8,25 +8,43 @@ Specifically, it'll print the following to the command line:
 - Highest supported Ultra DMA mode.
 - SMART self-test support.
 
-## Setup
+**Table of contents:**
 
-For development, it is recommended to use VS Code dev containers.
+- [🔍 ParseIdentify](#-parseidentify)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [Data](#data)
+  - [Building on Windows](#building-on-windows)
+  - [Building on Linux](#building-on-linux)
+  - [Output examples](#output-examples)
+
+## Install
+
+A Windows binary is provided in the `Releases` section of the repository.
+
+For Linux, see [Building on Linux](#building-on-linux).
 
 ## Usage
 
-Command:
+`ParseIdentify` expects a single command line argument: the path to the binary file containing the `ATA IDENTIFY` response. See the [Data](#data) section for more details regarding the expected data structure.
 
 ```sh
-./main <input_file>
+# Windows
+.\ParseIdentify.exe path\to\file.bin
+
+# Linux
+./ParseIdentify path/to/file.bin
 ```
 
-where `<input_file>` is a 512-byte binary file containing the SATA disk's response for the `ATA IDENTIFY` command.
+> [!NOTE]
+>
+> On Windows, the built executable is in `build\Release`. On Linux, it is inside `build`.
 
 ## Data
 
-Input files are located inside the `data` folder. Each binary file contains 256 words of 2 bytes each.
+Example input files are located inside the `data` folder. Each binary file contains 256 words of 2 bytes each.
 
-The file contents are described in pages 90-116 of the AT Attachment 8 - ATA/ATAPI Command Set (ATA8-ACS), found in [docs/D1699r3f-ATA8-ACS.pdf](docs/D1699r3f-ATA8-ACS.pdf). Of interest to this project are:
+The file contents are described in pages 90-116 of the AT Attachment 8 - ATA/ATAPI Command Set (ATA8-ACS), found in [docs/D1699r3f-ATA8-ACS.pdf](docs/D1699r3f-ATA8-ACS.pdf). They consist of the SATA disk's response for the `ATA IDENTIFY` command. Of interest to this project are:
 
 - words 27-46: Model number as 40 ASCII characters.
 - word 88, bits 0-6: Ultra DMA modes support. For bit `x`, if `x=1`, then Ultra DMA Mode `x` and below are supported.
@@ -37,20 +55,87 @@ The file contents are described in pages 90-116 of the AT Attachment 8 - ATA/ATA
 >
 > Source: page 90, section `7.16.2 Description` of the ATA8-ACS.
 
+## Building on Windows
+
+Pre-requisites:
+
+- CMake >= `3.30` (tested on `4.0.2`).
+- Visual Studio (tested on `17 2022`). `C++11` or higher.
+- Wix command-line tool and UI extension (tested on `4.0.4`).
+
+Create a `build` directory and `cd` into it:
+
+```ps
+mkdir build
+cd build
+```
+
+Build the project with:
+
+```ps
+cmake .. -G "Visual Studio 17 2022" 
+cmake --build . --config Release
+```
+
+A `ParseIdentify.exe` executable is now added to the `build\Release` folder. To build the `.msi` installer, simply run:
+
+```ps
+cpack
+```
+
+The `ParseIdentify-<VERSION>-win64.msi` installer can now be found in the `build` folder.
+
+## Building on Linux
+
+Pre-requisites:
+
+- CMake >= `3.30` (tested on `4.0.2`).
+- g++
+
+Create the `build` directory:
+
+```sh
+mkdir build && cd build
+```
+
+Build with CMake:
+
+```sh
+cmake .. && make
+```
+
+The `ParseIdentify` binary is created in the `build` folder.
+
 ## Output examples
 
 ```txt
 // identify1.bin
+Opening file: .\data\identify1.bin
+File size: 512 bytes
+
+--- ATA IDENTIFY ---
 Model Number: FUJITSU MJA2320BH G2
 Ultra DMA modes 5 and below are supported.
 SMART self-test not supported.
+```
 
+```txt
 // identify2.bin
+Opening file: .\data\identify2.bin        
+File size: 512 bytes
+
+--- ATA IDENTIFY ---
 Model Number: WDC WD2500AAJS-60Z0A0
 Ultra DMA modes 5 and below are supported.
 SMART self-test not supported.
+```
 
+```txt
 // identify3.bin
+Opening file: .\data\identify3.bin
+File size: 512 bytes
+
+--- ATA IDENTIFY ---
 Model Number: WDC WD5002AALX-00J37A0
 Ultra DMA modes 6 and below are supported.
 SMART self-test not supported.
