@@ -5,22 +5,32 @@
 
 #define SMART_SELF_TEST_SUPPORTED 2 // Bitflag for SMART self-test support, bit 1 of word 87.
 
+const int ATA_IDENTIFY_SIZE = 512; // ATA IDENTIFY data structure size in bytes
+
 int main(int argc, char *argv[])
 {
-	// TODO: add --help
-
-	if (argc < 2)
+	// Check if the user provided an argument.
+	if ( argc != 2 || std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h")
 	{
-		std::cerr << "Usage: " << argv[0] << " <input_file>" << std::endl;
+		const std::string error_log = "Usage: " + std::string(argv[0]) + " file_path\n";
+		std::cerr << error_log;
 		return 1;
 	}
 
-	// TODO: file type checks (.bin)
-	std::string filename = argv[1];
+	std::string file_path = argv[1];
 
-	std::cout << "Opening file: " << filename << std::endl;
+	// Check if the file extension is .bin. Return error if not.
+	std::string file_ext = file_path.substr(file_path.find_last_of("."));
+	if (file_ext != ".bin")
+	{
+		const std::string error_log = "Error: expected a binary file (.bin), but got (" + file_ext + ") instead.\n";
+		std::cerr << error_log;
+		return 1;
+	}
+	
+	std::cout << "Opening file: " << file_path << std::endl;
 
-	const int ATA_IDENTIFY_SIZE = 512; // ATA IDENTIFY data structure size in bytes
+	// TODO: move these constants to the parser header file.
 	const int word_size_bytes = 2;								// 2 bytes per word
 	const int model_number_start_bytes = 27 * word_size_bytes;	// 27th word
 	const int model_number_size_bytes = 20 * word_size_bytes;	// 20 words
@@ -29,16 +39,16 @@ int main(int argc, char *argv[])
 	const int smart_start_bytes = (87 * word_size_bytes) + 1; // 87th word, bits 0-7
 	const int smart_size_bytes = 1;							  // LSB of 87th word
 
-	std::ifstream file(filename, std::ios::binary | std::ios::ate); // ios::ate so pointer starts at end of file to get its size
+	std::ifstream file(file_path, std::ios::binary | std::ios::ate); // ios::ate so pointer starts at end of file to get its size
 
 	if (file.is_open())
 	{
 		// process file
 		// TODO: raise error if binary file is not 512 bytes
-		int size_bytes = static_cast<int>(file.tellg());
-		std::cout << "File size: " << size_bytes << " bytes" << std::endl;
+		const int SIZE_BYTES = static_cast<int>(file.tellg());
+		std::cout << "File size: " << SIZE_BYTES << " bytes" << std::endl;
 
-		// char buffer[size_bytes];
+		// char buffer[SIZE_BYTES];
 		std::array<char, ATA_IDENTIFY_SIZE> buffer;
 		file.seekg(0, std::ios::beg);
 		file.read(buffer.data(), buffer.size());
@@ -97,7 +107,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		std::cerr << "Unable to open file: " << filename << std::endl;
+		std::cerr << "Unable to open file: " << file_path << std::endl;
 		return 1;
 	}
 	return 0;
