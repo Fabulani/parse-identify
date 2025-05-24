@@ -3,7 +3,7 @@
 #include <array>
 
 #include "src/parser.h"
-
+#include "src/pprinter.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,31 +16,13 @@ int main(int argc, char *argv[])
 	}
 
 	std::string file_path = argv[1];
-
-	std::cout << "Opening file: " << file_path << std::endl;
-
 	std::array<char, ATA_IDENTIFY_SIZE> file_buffer = read_file_to_buffer(file_path);
-
-	std::cout << "File successfully opened.\n";
 
 	// Parse the file buffer
 	std::string model_number = extract_model_number(file_buffer);
 	unsigned int highest_dma_mode = extract_dma_mode(file_buffer);
 	bool smart_supported = extract_smart_support(file_buffer);
 
-	std::cout << std::endl
-			  << "--- ATA IDENTIFY ---" << std::endl;
-
-	std::cout << "Model Number: " << model_number << std::endl;
-	if (highest_dma_mode == 0)
-		std::cout << "Ultra DMA mode " << highest_dma_mode << " is supported." << std::endl;
-	else
-		std::cout << "Ultra DMA modes " << highest_dma_mode << " and below are supported." << std::endl;
-
-	if (smart_supported)
-		std::cout << "SMART self-test supported." << std::endl;
-	else
-		std::cout << "SMART self-test not supported." << std::endl;
-
+	print_results(file_path, model_number, highest_dma_mode, smart_supported);
 	return 0;
 }

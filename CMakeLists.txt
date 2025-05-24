@@ -26,6 +26,7 @@ include(CPack)
 add_executable(ParseIdentify 
     main.cpp
     src/parser.cpp
+    src/pprinter.cpp
 )
 
 install(TARGETS ParseIdentify DESTINATION bin)
