@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	// Parse the file buffer
 	std::string model_number = extract_model_number(file_buffer);
 	unsigned int highest_dma_mode = extract_dma_mode(file_buffer);
-	bool smart_support = extract_smart_support(file_buffer);
+	bool smart_supported = extract_smart_support(file_buffer);
 
 	std::cout << std::endl
 			  << "--- ATA IDENTIFY ---" << std::endl;
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	else
 		std::cout << "Ultra DMA modes " << highest_dma_mode << " and below are supported." << std::endl;
 
-	if (smart_support)
+	if (smart_supported)
 		std::cout << "SMART self-test supported." << std::endl;
 	else
 		std::cout << "SMART self-test not supported." << std::endl;
