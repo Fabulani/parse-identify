@@ -2,6 +2,7 @@
 #include <string>
 #include <array>
 #include <fstream>
+#include <algorithm>
 
 constexpr std::size_t ATA_IDENTIFY_SIZE = 512; // ATA IDENTIFY data structure size in bytes
 

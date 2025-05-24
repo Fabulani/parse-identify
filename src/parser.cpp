@@ -41,8 +41,8 @@ std::string extract_model_number(std::array<char, ATA_IDENTIFY_SIZE> &file_buffe
     constexpr std::size_t START_BYTES = 54; // 27th word
     constexpr std::size_t SIZE_BYTES = 40;  // 20 words long
 
-    char buffer[SIZE_BYTES];
-    std::memcpy(buffer, file_buffer.data() + START_BYTES, SIZE_BYTES);
+    std::array<char, SIZE_BYTES> buffer;
+    std::copy(file_buffer.begin() + START_BYTES, file_buffer.begin() + START_BYTES + SIZE_BYTES, buffer.begin());
     std::string model_number;
 
     // 2-word pairs are little endian, so we must flip them
