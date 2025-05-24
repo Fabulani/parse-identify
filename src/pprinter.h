@@ -10,6 +10,7 @@ const std::string CYAN = "\033[36m";
 const std::string WHITE = "\033[37m";
 const std::string RESET = "\033[0m";
 
+// Wrapper for print_(header, row, div) that nicely prints the results of parsing an ATA IDENTIFY results file
 void print_results(const std::string &file_path, const std::string &model_number,
                    unsigned int highest_dma_mode, bool smart_supported);
 
