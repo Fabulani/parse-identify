@@ -23,6 +23,9 @@ set(CPACK_SOURCE_GENERATOR "WIX")
 
 include(CPack)
 
-add_executable(ParseIdentify main.cpp)
+add_executable(ParseIdentify 
+    main.cpp
+    src/parser.cpp
+)
 
 install(TARGETS ParseIdentify DESTINATION bin)
