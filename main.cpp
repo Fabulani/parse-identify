@@ -64,9 +64,12 @@ int main(int argc, char *argv[])
 	file.read(buffer.data(), buffer.size());
 	file.close();
 
+	// DO NOT modify buffer after this point — use const_buffer only
+	const std::array<char, ATA_IDENTIFY_SIZE>& const_buffer = buffer;
+
 	// Model number - words 27-46 (little-endian)
 	char model_number_buffer[model_number_size_bytes];
-	std::memcpy(model_number_buffer, buffer.data() + model_number_start_bytes, model_number_size_bytes);
+	std::memcpy(model_number_buffer, const_buffer.data() + model_number_start_bytes, model_number_size_bytes);
 	std::string model_number;
 
 	for (int i = 0; i < model_number_size_bytes; i += word_size_bytes)
@@ -84,7 +87,7 @@ int main(int argc, char *argv[])
 
 	// Supported Ultra DMA modes, bits 0-7, MSB first
 	char supported_dma_buffer[supported_dma_size_bytes];
-	std::memcpy(supported_dma_buffer, buffer.data() + supported_dma_start_bytes, supported_dma_size_bytes);
+	std::memcpy(supported_dma_buffer, const_buffer.data() + supported_dma_start_bytes, supported_dma_size_bytes);
 
 	// IntegerLogObvious: https://graphics.stanford.edu/~seander/bithacks.html#IntegerLogObvious
 	unsigned int v = static_cast<unsigned int>(supported_dma_buffer[1]); // LSB contains the supported dma modes
@@ -109,7 +112,7 @@ int main(int argc, char *argv[])
 	// SMART self-test support is in LSB of word 87, bit 1.
 	// TODO: check if the buffer is assigned the correct byte. Use bitset to double-check.
 	unsigned char smart_buffer[1];
-	std::memcpy(smart_buffer, buffer.data() + smart_start_bytes, smart_size_bytes);
+	std::memcpy(smart_buffer, const_buffer.data() + smart_start_bytes, smart_size_bytes);
 	if ((smart_buffer[0] & SMART_SELF_TEST_SUPPORTED) == SMART_SELF_TEST_SUPPORTED)
 		std::cout << "SMART self-test supported." << std::endl;
 	else
