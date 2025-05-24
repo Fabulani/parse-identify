@@ -2,8 +2,8 @@
 #include <string>
 #include <array>
 
-#include "src/parser.h"
-#include "src/pprinter.h"
+#include "parser.h"
+#include "pprinter.h"
 
 int main(int argc, char *argv[])
 {

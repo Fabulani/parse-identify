@@ -24,7 +24,7 @@ set(CPACK_SOURCE_GENERATOR "WIX")
 include(CPack)
 
 add_executable(ParseIdentify 
-    main.cpp
+    src/main.cpp
     src/parser.cpp
     src/pprinter.cpp
 )
