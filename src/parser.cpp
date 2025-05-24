@@ -1,7 +1,5 @@
 #include "parser.h"
 
-#include <fstream>
-
 // TODO: it'd be better to define parser as a class and store the file buffer as read-only.
 // TODO: good idea to put `read_file_to_buffer` in the constructor so it throws immediatelly if the file is not valid.
 
