@@ -1,6 +1,6 @@
 # 🔍 ParseIdentify
 
-`ParserIdentify` is a parser for binary files containing the SATA disk's response for the `ATA IDENTIFY` command.
+`ParseIdentify` is a parser for binary files containing the SATA disk's response for the `ATA IDENTIFY` command.
 
 Specifically, it'll print the following to the command line:
 
