@@ -31,6 +31,8 @@ On Linux, run:
 dpkg -i ParseIdentify-2.0-Linux.deb
 ```
 
+Alternatively, a binary for Linux and an executable for Windows are also available. These can be useful for quick use and testing.
+
 ## Usage
 
 `ParseIdentify` expects a single command line argument: the path to the binary file containing the `ATA IDENTIFY` response. See the [Data](#data) section for more details regarding the expected data structure.
