@@ -29,10 +29,20 @@ jobs:
           vcvarsall: true
           cmake: true
           ninja: true
-          
-      - name: Install WiX Toolset v4
+
+      - name: Install .NET SDK (required for WiX v4)
         if: matrix.os == 'windows-2022'
-        run: choco install wixtoolset --version=4.0.4 -y
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '7.0.100'
+          
+      - name: Install WiX v4 CLI
+        if: matrix.os == 'windows-2022'
+        run: dotnet tool install --global wix --version 4.0.4
+
+      - name: Add WiX UI extension
+        if: matrix.os == 'windows-2022'
+        run: wix extension add --global WixToolset.UI.wixext/4.0.4
 
       - name: Configure CMake
         run: >
