@@ -185,6 +185,8 @@ File                          : ..\data\identify2.bin
 Status                        : Successfully opened
 ------------------------------------------------------------
 Model Number                  : WDC WD2500AAJS-60Z0A0
+Supported Ultra DMA Modes     : 5 and below
+SMART Self-Test Support       : Yes
 ------------------------------------------------------------
 ```
 
