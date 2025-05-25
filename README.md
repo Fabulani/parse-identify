@@ -60,14 +60,15 @@ The file contents are described in pages 90-116 of the AT Attachment 8 - ATA/ATA
 Pre-requisites:
 
 - CMake >= `3.30` (tested on `4.0.2`).
-- Visual Studio (tested on `17 2022`). `C++11` or higher.
+- Visual Studio (tested on `17 2022`) with `C++ CMake tools for Windows` and `C++ build tools`.
+- Ninja (tested on `1.11.1.git.kitware.jobserver-1`).
 - Wix command-line tool and UI extension (tested on `4.0.4`).
 
-Create a `build` directory and `cd` into it:
+Launch either the `x64 Native Tools Command Prompt for VS 2022` or the `Developer Command Prompt for VS 2022` and run:
 
-```ps
-mkdir build
-cd build
+```cmd
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
 ```
 
 Build the project with:
@@ -77,13 +78,15 @@ cmake .. -G "Visual Studio 17 2022"
 cmake --build . --config Release
 ```
 
-A `ParseIdentify.exe` executable is now added to the `build\Release` folder. To build the `.msi` installer, simply run:
+A `ParseIdentify.exe` executable is now added to the `build` folder.
+
+For the `.msi` installer, simply run:
 
 ```ps
-cpack
+cmake --build build --target package
 ```
 
-The `ParseIdentify-<VERSION>-win64.msi` installer can now be found in the `build` folder.
+The `ParseIdentify-<VERSION>-win32.msi` installer can now be found in the `build` folder.
 
 ## Building on Linux
 
@@ -91,6 +94,7 @@ Pre-requisites:
 
 - CMake >= `3.30` (tested on `4.0.2`).
 - g++ (tested on `11.4.0`).
+- ninja (tested on `1.10.1`)
 
 Create the `build` directory:
 
@@ -98,10 +102,10 @@ Create the `build` directory:
 mkdir build && cd build
 ```
 
-Build with CMake:
+Build with CMake and ninja:
 
 ```sh
-cmake .. && make
+cmake .. -DCMAKE_BUILD_TYPE=Release -G Ninja && cmake --build .
 ```
 
 The `ParseIdentify` binary is created in the `build` folder.
