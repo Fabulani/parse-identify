@@ -16,6 +16,7 @@ Specifically, it'll print the following to the command line:
   - [Data](#data)
   - [Building on Windows](#building-on-windows)
   - [Building on Linux](#building-on-linux)
+  - [Format/Lint with Clang](#formatlint-with-clang)
   - [Output examples](#output-examples)
 
 ## Install
@@ -120,6 +121,28 @@ cmake --build build --target package
 ```
 
 `ParseIdentify-<version>-Linux.<deb/tar.gz>` can be found in the `build` folder.
+
+## Format/Lint with Clang
+
+Generate compile commands with `CMake` once:
+
+```sh
+cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+```
+
+Check formatting with:
+
+```sh
+find src -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run --Werror
+```
+
+Lint with:
+
+```sh
+clang-tidy -p build src/*.cpp -- -std=c++17 -I./src
+```
+
+Alternatively, use `clangd` and its IDE extension.
 
 ## Output examples
 
