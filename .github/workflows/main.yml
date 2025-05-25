@@ -2,7 +2,7 @@ name: Format, Lint, Build and Upload
 
 on:
   push:
-    branches: [main, add-workflows]
+    branches: [main]
   pull_request:
 
 jobs:
