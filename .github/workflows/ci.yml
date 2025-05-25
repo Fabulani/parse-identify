@@ -2,7 +2,7 @@ name: Build and Package
 
 on:
   push:
-    branches: [main]
+    branches: [main, add-workflows]
   pull_request:
 
 jobs:
