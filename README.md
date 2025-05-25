@@ -55,6 +55,12 @@ Running `ParseIdentify` without arguments, with `-h`or with `--help` will print 
 Usage: ParseIdentify file_path
 ```
 
+> [!WARNING]
+>
+> For colors to work in Windows terminals, you must set `VirtualTerminalLevel` to `1` in the registry. Run the following in Powershell or cmd:
+>
+> `reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f`
+
 ## Data
 
 Example input files are located inside the `data` folder. Each binary file contains 256 words of 2 bytes each.
