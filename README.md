@@ -74,7 +74,7 @@ Pre-requisites:
 - CMake >= `3.30` (tested on `4.0.2`).
 - Visual Studio (tested on `17 2022`) with `C++ CMake tools for Windows` and `C++ build tools`.
 - Ninja (tested on `1.11.1.git.kitware.jobserver-1`).
-- Wix command-line tool and UI extension (tested on `4.0.4`).
+- [Wix command-line tool and UI extension](https://cmake.org/cmake/help/latest/cpack_gen/wix.html#wix-net-tools) (tested on `4.0.4`).
 
 Launch either the `x64 Native Tools Command Prompt for VS 2022` or the `Developer Command Prompt for VS 2022` and run:
 
