@@ -1,0 +1,58 @@
+name: Build and Package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022, ubuntu-22.04]
+        include:
+          - os: windows-2022
+            compiler: msvc
+          - os: ubuntu-22.04
+            compiler: gcc
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup C++ Toolchain
+        uses: aminya/setup-cpp@v1
+        with:
+          compiler: msvc
+          vcvarsall: true
+          cmake: true
+          ninja: true
+
+      - name: Configure CMake
+        run: >
+          cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=Release
+          -G "Ninja"
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run CPack (Windows)
+        if: matrix.os == 'windows-2022'
+        run: cmake --build build --target package
+
+      - name: Archive Installer (Windows)
+        if: matrix.os == 'windows-2022'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ParseIdentify-Windows-Installer
+          path: build/*.msi
+
+      - name: Archive Binary (Linux)
+        if: matrix.os == 'ubuntu-22.04'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ParseIdentify-Linux-Binary
+          path: build/ParseIdentify
