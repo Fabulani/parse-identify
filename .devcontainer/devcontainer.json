@@ -11,7 +11,7 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"xaver.clang-format"
+				"llvm-vs-code-extensions.vscode-clangd"
 			]
 		}
 	}
