@@ -108,35 +108,49 @@ The `ParseIdentify` binary is created in the `build` folder.
 
 ## Output examples
 
-```txt
-// identify1.bin
-Opening file: .\data\identify1.bin
-File size: 512 bytes
+> [!NOTE]
+>
+> Outputs are colorized: red for falsy, green for truthy, cyan for header and divs, and white for the rest.
 
---- ATA IDENTIFY ---
-Model Number: FUJITSU MJA2320BH G2
-Ultra DMA modes 5 and below are supported.
-SMART self-test not supported.
+`identify1.bin`:
+
+```txt
+============================================================
+                    ATA IDENTIFY RESULTS
+============================================================
+File                          : ..\data\identify1.bin
+Status                        : Successfully opened
+------------------------------------------------------------
+Model Number                  : FUJITSU MJA2320BH G2
+Supported Ultra DMA Modes     : 5 and below
+SMART Self-Test Support       : Yes
+------------------------------------------------------------
 ```
 
-```txt
-// identify2.bin
-Opening file: .\data\identify2.bin        
-File size: 512 bytes
+`identify2.bin`:
 
---- ATA IDENTIFY ---
-Model Number: WDC WD2500AAJS-60Z0A0
-Ultra DMA modes 5 and below are supported.
-SMART self-test not supported.
+```txt
+============================================================
+                    ATA IDENTIFY RESULTS
+============================================================
+File                          : ..\data\identify2.bin
+Status                        : Successfully opened
+------------------------------------------------------------
+Model Number                  : WDC WD2500AAJS-60Z0A0
+------------------------------------------------------------
 ```
 
-```txt
-// identify3.bin
-Opening file: .\data\identify3.bin
-File size: 512 bytes
+`identify3.bin`:
 
---- ATA IDENTIFY ---
-Model Number: WDC WD5002AALX-00J37A0
-Ultra DMA modes 6 and below are supported.
-SMART self-test not supported.
+```txt
+============================================================
+                    ATA IDENTIFY RESULTS
+============================================================
+File                          : ..\data\identify3.bin
+Status                        : Successfully opened
+------------------------------------------------------------
+Model Number                  : WDC WD5002AALX-00J37A0
+Supported Ultra DMA Modes     : 6 and below
+SMART Self-Test Support       : Yes
+------------------------------------------------------------
 ```

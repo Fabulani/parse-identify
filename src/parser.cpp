@@ -5,6 +5,7 @@
 
 std::array<char, ATA_IDENTIFY_SIZE> read_file_to_buffer(const std::string &file_path)
 {
+    // TODO: this crashes if the file has no extension. Need to check for std::string::npos, or better: use the filesystem lib (c++17).
     // Throw error if the file extension is not .bin
     std::string file_ext = file_path.substr(file_path.find_last_of("."));
     if (file_ext != ".bin")
