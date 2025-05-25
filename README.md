@@ -16,29 +16,44 @@ Specifically, it'll print the following to the command line:
   - [Data](#data)
   - [Building on Windows](#building-on-windows)
   - [Building on Linux](#building-on-linux)
+  - [Format/Lint with Clang](#formatlint-with-clang)
   - [Output examples](#output-examples)
 
 ## Install
 
-A Windows binary is provided in the `Releases` section of the repository.
+Installers for Windows (`.msi`) and Linux (`.deb`, `.tar.gz`) are available in the [Releases](https://github.com/Fabulani/parse-identify/releases) section of this repo.
 
-For Linux, see [Building on Linux](#building-on-linux).
+On Windows, download the installer, open it and follow its instructions.
+
+On Linux, run:
+
+```sh
+dpkg -i ParseIdentify-2.0-Linux.deb
+```
+
+Alternatively, a binary for Linux and an executable for Windows are also available. These can be useful for quick use and testing.
 
 ## Usage
 
 `ParseIdentify` expects a single command line argument: the path to the binary file containing the `ATA IDENTIFY` response. See the [Data](#data) section for more details regarding the expected data structure.
 
-```sh
-# Windows
-.\ParseIdentify.exe path\to\file.bin
+On Windows:
 
-# Linux
-./ParseIdentify path/to/file.bin
+```cmd
+.\ParseIdentify.exe path\to\file.bin
 ```
 
-> [!NOTE]
->
-> On Windows, the built executable is in `build\Release`. On Linux, it is inside `build`.
+On Linux:
+
+```sh
+ParseIdentify path/to/file.bin
+```
+
+Running `ParseIdentify` without arguments, with `-h`or with `--help` will print usage instructions:
+
+```txt
+Usage: ParseIdentify file_path
+```
 
 ## Data
 
@@ -60,30 +75,30 @@ The file contents are described in pages 90-116 of the AT Attachment 8 - ATA/ATA
 Pre-requisites:
 
 - CMake >= `3.30` (tested on `4.0.2`).
-- Visual Studio (tested on `17 2022`). `C++11` or higher.
-- Wix command-line tool and UI extension (tested on `4.0.4`).
+- Visual Studio (tested on `17 2022`) with `C++ CMake tools for Windows` and `C++ build tools`.
+- Ninja (tested on `1.11.1.git.kitware.jobserver-1`).
+- [Wix command-line tool and UI extension](https://cmake.org/cmake/help/latest/cpack_gen/wix.html#wix-net-tools) (tested on `4.0.4`).
 
-Create a `build` directory and `cd` into it:
+Launch either the `x64 Native Tools Command Prompt for VS 2022` or the `Developer Command Prompt for VS 2022` and run:
 
-```ps
-mkdir build
-cd build
+```cmd
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -G Ninja
+cmake --build build
 ```
 
-Build the project with:
+A `ParseIdentify.exe` executable is now added to the `build` folder.
 
-```ps
-cmake .. -G "Visual Studio 17 2022" 
-cmake --build . --config Release
+For the `.msi` installer, simply run:
+
+```cmd
+cmake --build build --target package
 ```
 
-A `ParseIdentify.exe` executable is now added to the `build\Release` folder. To build the `.msi` installer, simply run:
+The `ParseIdentify-<VERSION>-win<32/64>.msi` installer can now be found in the `build` folder.
 
-```ps
-cpack
-```
-
-The `ParseIdentify-<VERSION>-win64.msi` installer can now be found in the `build` folder.
+> [!NOTE]
+>
+> `Command Prompt for VS 2022` sets up the MSVC environment such that `cl.exe` is usable by CMake and Ninja. Using regular Powershell and cmd results in `ninja: fatal: CreateProcess: Access is denied.`, as CMake tries to use `cc` from Cygwin, which causes a mismatch. To avoid replacing Cygwin with MinGW, we stick with VS command prompts.
 
 ## Building on Linux
 
@@ -91,26 +106,53 @@ Pre-requisites:
 
 - CMake >= `3.30` (tested on `4.0.2`).
 - g++ (tested on `11.4.0`).
+- ninja (tested on `1.10.1`)
 
-Create the `build` directory:
-
-```sh
-mkdir build && cd build
-```
-
-Build with CMake:
+Build with CMake and ninja:
 
 ```sh
-cmake .. && make
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -G Ninja && cmake --build build
 ```
 
 The `ParseIdentify` binary is created in the `build` folder.
+
+For the `.deb` and `.tar.gz` installers, run:
+
+```sh
+cmake --build build --target package
+```
+
+`ParseIdentify-<version>-Linux.<deb/tar.gz>` can be found in the `build` folder.
+
+## Format/Lint with Clang
+
+Generate compile commands with `CMake` once:
+
+```sh
+cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+```
+
+Check formatting with:
+
+```sh
+find src -name '*.cpp' -o -name '*.h' | xargs clang-format --dry-run --Werror
+```
+
+Lint with:
+
+```sh
+clang-tidy -p build src/*.cpp -- -std=c++17 -I./src
+```
+
+Alternatively, use `clangd` and its IDE extension.
 
 ## Output examples
 
 > [!NOTE]
 >
 > Outputs are colorized: red for falsy, green for truthy, cyan for header and divs, and white for the rest.
+>
+> Colors might not work on Windows Powershell and CMD. I tested on mine, and it only failed to work in the `Developer Command Prompt for VS 2022`.
 
 `identify1.bin`:
 
