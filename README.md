@@ -79,7 +79,7 @@ Pre-requisites:
 Launch either the `x64 Native Tools Command Prompt for VS 2022` or the `Developer Command Prompt for VS 2022` and run:
 
 ```cmd
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -G Ninja
 cmake --build build
 ```
 
