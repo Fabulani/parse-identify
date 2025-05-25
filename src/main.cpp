@@ -12,13 +12,10 @@ int main(int argc, char *argv[]) {
     const std::string error_message =
         "Usage: " + std::string(argv[0]) + " file_path\n";
     std::cerr << error_message;
-                                  std::cout << "clang-format should complain here (identation)";
-
 
     std::cout << "clang-tidy should complain here (no ;)"
 
-    
-    return 1;
+        return 1;
   }
 
   std::string file_path = argv[1];
