@@ -20,25 +20,37 @@ Specifically, it'll print the following to the command line:
 
 ## Install
 
-A Windows binary is provided in the `Releases` section of the repository.
+Installers for Windows (`.msi`) and Linux (`.deb`, `.tar.gz`) are available in the [Releases](https://github.com/Fabulani/parse-identify/releases) section of this repo.
 
-For Linux, see [Building on Linux](#building-on-linux).
+On Windows, download the installer, open it and follow its instructions.
+
+On Linux, run:
+
+```sh
+dpkg -i ParseIdentify-2.0-Linux.deb
+```
 
 ## Usage
 
 `ParseIdentify` expects a single command line argument: the path to the binary file containing the `ATA IDENTIFY` response. See the [Data](#data) section for more details regarding the expected data structure.
 
-```sh
-# Windows
-.\ParseIdentify.exe path\to\file.bin
+On Windows:
 
-# Linux
-./ParseIdentify path/to/file.bin
+```cmd
+.\ParseIdentify.exe path\to\file.bin
 ```
 
-> [!NOTE]
->
-> On Windows, the built executable is in `build\Release`. On Linux, it is inside `build`.
+On Linux:
+
+```sh
+ParseIdentify path/to/file.bin
+```
+
+Running `ParseIdentify` without arguments, with `-h`or with `--help` will print usage instructions:
+
+```txt
+Usage: ParseIdentify file_path
+```
 
 ## Data
 
@@ -71,22 +83,19 @@ cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
 
-Build the project with:
-
-```ps
-cmake .. -G "Visual Studio 17 2022" 
-cmake --build . --config Release
-```
-
 A `ParseIdentify.exe` executable is now added to the `build` folder.
 
 For the `.msi` installer, simply run:
 
-```ps
+```cmd
 cmake --build build --target package
 ```
 
-The `ParseIdentify-<VERSION>-win32.msi` installer can now be found in the `build` folder.
+The `ParseIdentify-<VERSION>-win<32/64>.msi` installer can now be found in the `build` folder.
+
+> [!NOTE]
+>
+> `Command Prompt for VS 2022` sets up the MSVC environment such that `cl.exe` is usable by CMake and Ninja. Using regular Powershell and cmd results in `ninja: fatal: CreateProcess: Access is denied.`, as CMake tries to use `cc` from Cygwin, which causes a mismatch. To avoid replacing Cygwin with MinGW, we stick with VS command prompts.
 
 ## Building on Linux
 
@@ -96,25 +105,29 @@ Pre-requisites:
 - g++ (tested on `11.4.0`).
 - ninja (tested on `1.10.1`)
 
-Create the `build` directory:
-
-```sh
-mkdir build && cd build
-```
-
 Build with CMake and ninja:
 
 ```sh
-cmake .. -DCMAKE_BUILD_TYPE=Release -G Ninja && cmake --build .
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -G Ninja && cmake --build build
 ```
 
 The `ParseIdentify` binary is created in the `build` folder.
+
+For the `.deb` and `.tar.gz` installers, run:
+
+```sh
+cmake --build build --target package
+```
+
+`ParseIdentify-<version>-Linux.<deb/tar.gz>` can be found in the `build` folder.
 
 ## Output examples
 
 > [!NOTE]
 >
 > Outputs are colorized: red for falsy, green for truthy, cyan for header and divs, and white for the rest.
+>
+> Colors might not work on Windows Powershell and CMD. I tested on mine, and it only failed to work in the `Developer Command Prompt for VS 2022`.
 
 `identify1.bin`:
 
