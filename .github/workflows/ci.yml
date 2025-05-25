@@ -32,7 +32,7 @@ jobs:
 
       - name: Install Clang Tools (Linux)
         if: matrix.os == 'ubuntu-22.04'
-        run: sudo apt-get && sudo apt install -y --no-install-recommends clang-tidy clang-format
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends clang-tidy clang-format
       
       - name: Install Clang Tools (Windows)
         if: matrix.os == 'windows-2022'
